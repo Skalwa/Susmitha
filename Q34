@@ -1,0 +1,40 @@
+def hasPath(maze, start, destination):
+    def is_valid_move(row, col):
+        return 0 <= row < len(maze) and 0 <= col < len(maze[0]) and maze[row][col] != 1
+
+    def dfs(row, col):
+        if [row, col] == destination:
+            return True
+        
+        if visited[row][col]:
+            return False
+        
+        visited[row][col] = True
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for dr, dc in directions:
+            new_row, new_col = row, col
+            while is_valid_move(new_row + dr, new_col + dc):
+                new_row += dr
+                new_col += dc
+
+            if dfs(new_row, new_col):
+                return True
+
+        return False
+
+    visited = [[False for _ in range(len(maze[0]))] for _ in range(len(maze))]
+    return dfs(start[0], start[1])
+
+# Test data
+maze = [
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [1, 1, 0, 1, 1],
+    [0, 0, 0, 0, 0]
+]
+start = [0, 4]
+destination = [4, 4]
+
+print(hasPath(maze, start, destination))  
